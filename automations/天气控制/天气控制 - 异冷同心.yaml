@@ -1,0 +1,33 @@
+description: ''
+trigger:
+- platform: time_pattern
+  minutes: /1
+condition: []
+action:
+- variables:
+    当前温度: '{{ float(states(''sensor.filtered_pi_temperature_20'')) }}'
+    目标温度: '{{ float(states(''不许看！'')) }}'
+    空调目标温度: '{{ float(state_attr(''不许看！'', ''temperature'')) }} '
+    幻想温度: '{{ 目标温度 - 1.8*(当前温度-目标温度) if 当前温度 > 目标温度 else 目标温度 - 0.8*(当前温度-目标温度) }}'
+    幻想温度重置: '{{ 幻想温度 if 目标温度 < 26 else 目标温度 }}'
+    幻想温度压限: '{{ max(目标温度-3, min(目标温度 + 1, 幻想温度重置)) }}'
+    幻想温度半整: '{{ int(幻想温度压限*2+0.5)/2 }}'
+    绝对差: ' {{ (空调目标温度 - 幻想温度)**2**0.5 }} '
+- if:
+  - condition: and
+    conditions:
+    - condition: device
+      device_id: 不许看！
+      domain: climate
+      entity_id: 不许看！
+      type: is_hvac_mode
+      hvac_mode: cool
+    - condition: template
+      value_template: '{{ 绝对差 > 0.8 }}'
+  then:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ 幻想温度半整 }}'
+    target:
+      entity_id: 不许看！
+mode: single

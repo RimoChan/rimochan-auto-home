@@ -1,0 +1,57 @@
+description: ''
+trigger:
+- platform: time_pattern
+  seconds: '0'
+action:
+- variables:
+    x: '{{ now().hour + now().minute/60 }}'
+- choose:
+  - conditions:
+    - condition: time
+      after: 08:00:00
+      before: '18:00:00'
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+    sequence:
+    - service: light.turn_on
+      data:
+        kelvin: '{{ min(6400, cos((x - 15) / 8 * 3.14 / 2) * 1600 + 4800) }}'
+        brightness_pct: '{{ int(states(''不许看！'')) or min(100, cos((x - 15) / 8 * 3.14 / 2) * 30 + 70) - (18 - x)**0.35 * 30 }}'
+      target:
+        entity_id:
+        - 不许看！
+        - 不许看！
+        - 不许看！
+  - conditions:
+    - condition: time
+      after: 08:00:00
+      before: '23:00:00'
+    sequence:
+    - service: light.turn_on
+      data:
+        kelvin: '{{ min(6400, cos((x - 15) / 8 * 3.14 / 2) * 1600 + 4800) }}'
+        brightness_pct: '{{ int(states(''不许看！'')) or min(100, cos((x - 15) / 8 * 3.14 / 2) * 30 + 70) }}'
+      target:
+        entity_id:
+        - 不许看！
+        - 不许看！
+        - 不许看！
+  - conditions:
+    - condition: time
+      after: '23:00:00'
+      before: '23:59:00'
+    sequence:
+    - service: light.turn_on
+      data:
+        kelvin: '{{ 4800 - 900 * (x - 23) }}'
+        brightness_pct: '{{ int(states(''不许看！'')) or (70 - 60 * (x - 23)) }}'
+      target:
+        entity_id:
+        - 不许看！
+        - 不许看！
+        - 不许看！
+mode: single

@@ -1,0 +1,19 @@
+description: ''
+trigger:
+- platform: time_pattern
+  seconds: '0'
+  minutes: / 2
+condition: []
+action:
+- variables:
+    x: '{{ now().hour + now().minute/60 }}'
+- service: light.turn_on
+  data:
+    kelvin: '{{ cos((x - 12) / 7 * 3.14 / 2) * 800 + 5200 }}'
+    brightness_pct: '{{ min(100, max(5, cos((x - 14.5) / 6 * 3.14 / 2)  * 75 + 70)) }}'
+  target:
+    entity_id:
+    - 不许看！
+    - 不许看！
+    - 不许看！
+mode: single

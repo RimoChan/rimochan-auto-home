@@ -1,0 +1,17 @@
+description: ''
+trigger:
+- platform: state
+  entity_id:
+  - sensor.pc_title
+  to: unknown
+  for:
+    hours: 48
+    minutes: 0
+    seconds: 0
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 电脑失联了！
+mode: single

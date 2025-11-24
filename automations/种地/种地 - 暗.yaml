@@ -1,0 +1,12 @@
+description: ''
+trigger:
+- platform: time
+  at: '18:00:00'
+condition: []
+action:
+- service: switch.turn_off
+  target:
+    device_id:
+    - 不许看！
+  data: {}
+mode: single

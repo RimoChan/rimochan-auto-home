@@ -1,0 +1,28 @@
+description: ''
+trigger:
+- platform: time_pattern
+  seconds: '0'
+  minutes: / 3
+condition: null
+action:
+- variables:
+    x: '{{ now().hour + now().minute/60 }}'
+    开始时间: 1.5
+    开始温度: 19.5
+    结束时间: 6.5
+    结束温度: 24
+    持续时间: '{{ 结束时间 - 开始时间 }}'
+- if:
+  - condition: template
+    value_template: '{{ x > 结束时间 or x < 开始时间 }} '
+  then:
+  - stop: ''
+- variables:
+    目标温度: '{{ (x - 开始时间) / 持续时间 * (结束温度 - 开始温度) + 开始温度 }}'
+    目标温度取整: '{{ int(目标温度 * 2) / 2 }}'
+- service: input_number.set_value
+  data:
+    value: '{{ 目标温度 }}'
+  target:
+    entity_id: 不许看！
+mode: single

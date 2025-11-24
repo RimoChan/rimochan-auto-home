@@ -1,0 +1,25 @@
+description: ''
+trigger:
+- platform: state
+  entity_id:
+  - sensor.lian_wang_google
+  to: unknown
+  for:
+    hours: 0
+    minutes: 30
+    seconds: 0
+- platform: numeric_state
+  entity_id:
+  - sensor.lian_wang_baidu
+  for:
+    hours: 0
+    minutes: 30
+    seconds: 0
+  above: 1
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 网有问题！
+mode: single

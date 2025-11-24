@@ -1,0 +1,25 @@
+description: ''
+trigger:
+- platform: numeric_state
+  entity_id:
+  - 不许看！
+  for:
+    hours: 1
+    minutes: 0
+    seconds: 0
+  above: 6.5
+- platform: numeric_state
+  entity_id:
+  - 不许看！
+  for:
+    hours: 0
+    minutes: 10
+    seconds: 0
+  below: 0
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 冰箱温度有问题！
+mode: single

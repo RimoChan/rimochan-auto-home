@@ -1,0 +1,17 @@
+description: ''
+trigger:
+- platform: numeric_state
+  entity_id:
+  - 不许看！
+  for:
+    hours: 0
+    minutes: 20
+    seconds: 0
+  above: 70
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 内存太大了，不行！
+mode: single

@@ -1,0 +1,23 @@
+description: ''
+trigger:
+- platform: time
+  at: '10:30:00'
+condition:
+- condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+action:
+- service: climate.turn_off
+  data: {}
+  target:
+    device_id: 不许看！
+- service: input_number.set_value
+  data:
+    value: 10
+  target:
+    entity_id: 不许看！
+mode: single

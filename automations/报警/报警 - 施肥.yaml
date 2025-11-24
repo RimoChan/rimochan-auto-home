@@ -1,0 +1,17 @@
+description: ''
+trigger:
+- platform: numeric_state
+  entity_id:
+  - 不许看！
+  for:
+    hours: 1
+    minutes: 0
+    seconds: 0
+  below: 250
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 树要施肥了！
+mode: single

@@ -1,0 +1,20 @@
+description: ''
+trigger:
+- platform: time_pattern
+  hours: '18'
+  minutes: '00'
+condition:
+- condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+action:
+- service: cover.set_cover_position
+  data:
+    position: 0
+  target:
+    entity_id: 不许看！
+mode: single

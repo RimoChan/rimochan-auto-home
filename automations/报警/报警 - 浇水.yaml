@@ -1,0 +1,17 @@
+description: ''
+trigger:
+- platform: numeric_state
+  entity_id:
+  - 不许看！
+  for:
+    hours: 24
+    minutes: 0
+    seconds: 0
+  below: 15
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 树缺水了！
+mode: single

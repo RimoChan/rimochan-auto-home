@@ -1,0 +1,17 @@
+description: ''
+trigger:
+- platform: numeric_state
+  entity_id:
+  - sensor.pi_voc
+  for:
+    hours: 0
+    minutes: 30
+    seconds: 0
+  above: 250
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 房间有毒！
+mode: single

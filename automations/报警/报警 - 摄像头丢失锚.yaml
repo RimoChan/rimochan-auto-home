@@ -1,0 +1,16 @@
+description: ''
+trigger:
+- platform: numeric_state
+  entity_id: sensor.qr_count
+  for:
+    hours: 18
+    minutes: 0
+    seconds: 0
+  below: 2
+condition: []
+action:
+- device_id: 不许看！
+  domain: mobile_app
+  type: notify
+  message: 摄像头坏了！
+mode: single

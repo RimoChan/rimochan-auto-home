@@ -1,0 +1,15 @@
+description: ''
+trigger:
+- platform: time_pattern
+  minutes: / 3
+condition:
+- condition: time
+  after: 07:30:00
+  before: '23:59:00'
+action:
+- service: light.turn_on
+  data:
+    brightness_pct: '{{ min(100, cos((now().hour + now().minute/60 - 15) / 8 * 3.14 / 2) * 190 + 2) }}'
+  target:
+    entity_id: 不许看！
+mode: single

@@ -1,0 +1,29 @@
+description: ''
+trigger:
+- platform: time_pattern
+  seconds: '0'
+condition:
+- condition: state
+  entity_id: 不许看！
+  attribute: hvac_action
+  state: cooling
+action:
+- variables:
+    温差: '{{ float(state_attr(''sensor.shu_mei_pai_chuan_gan_qi'', ''pi_temperature'')) - float(state_attr(''不许看！'', ''temperature'')) }}'
+    目标风速: '{{int(min(8, max(0, 温差 - 0.2)) / 8 * 95 + 1)}}'
+    风速差: '{{state_attr(''不许看！'', ''enhance.fan_percent'') - 目标风速}}'
+- if:
+  - condition: template
+    value_template: '{{风速差 < 3 and 风速差 > -3}}'
+  then:
+  - stop: ''
+- service: xiaomi_miot.send_command
+  data:
+    throw: true
+    entity_id: 不许看！
+    method: set_properties
+    params:
+    - siid: 10
+      piid: 1
+      value: '{{ 目标风速 }}'
+mode: single

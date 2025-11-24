@@ -1,0 +1,24 @@
+description: ''
+trigger:
+- platform: time
+  at: '10:00:00'
+condition:
+- condition: time
+  weekday:
+  - mon
+  - tue
+  - wed
+  - thu
+  - fri
+action:
+- service: climate.set_temperature
+  data:
+    temperature: 28
+  target:
+    entity_id: 不许看！
+- service: input_number.set_value
+  data:
+    value: 28
+  target:
+    entity_id: 不许看！
+mode: single

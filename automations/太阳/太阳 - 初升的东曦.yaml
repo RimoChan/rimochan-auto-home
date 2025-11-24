@@ -1,0 +1,74 @@
+description: ''
+trigger:
+- platform: time
+  at: 09:45:00
+condition:
+- condition: time
+  weekday:
+  - tue
+  - wed
+  - thu
+  - fri
+  - mon
+action:
+- variables:
+    开始时间: '{{ now().timestamp() }}'
+    持续时间: 1800
+- repeat:
+    while:
+    - condition: template
+      value_template: '{{now().timestamp() < 开始时间 + 持续时间}}'
+    sequence:
+    - if:
+      - condition: template
+        value_template: '{{now().timestamp() < 开始时间 + 持续时间*0.07843}}'
+      then:
+      - service: light.turn_on
+        data:
+          brightness: '{{ int((now().timestamp()-开始时间) / (持续时间*0.07843) * 254 + 1) }}'
+          rgb_color:
+          - '{{ int(255 - (((now().timestamp()-开始时间) / (持续时间*0.07843))**0.5)*243) }}'
+          - '{{ int(40 - ((now().timestamp()-开始时间) / (持续时间*0.07843))*28) }}'
+          - 10
+        target:
+          entity_id:
+          - 不许看！
+      else:
+      - service: light.turn_on
+        data:
+          brightness: '{{ int((now().timestamp()-开始时间) / 持续时间 * 254 + 1) }}'
+          kelvin: 4600
+        target:
+          entity_id:
+          - 不许看！
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+- delay:
+    hours: 0
+    minutes: 43
+    seconds: 0
+    milliseconds: 0
+- service: light.turn_on
+  data:
+    rgb_color:
+    - 255
+    - 10
+    - 10
+    brightness_pct: 1
+  target:
+    entity_id:
+    - 不许看！
+- delay:
+    hours: 0
+    minutes: 2
+    seconds: 0
+    milliseconds: 0
+- service: light.turn_off
+  data: {}
+  target:
+    entity_id:
+    - 不许看！
+mode: single
